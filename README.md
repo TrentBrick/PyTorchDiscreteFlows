@@ -35,6 +35,6 @@ Meanwhile, in my attempted replication (checkout Figure2Replication.ipynb) where
 
 And sampling from the latent space and doing a backwards pass from z->x through the trained model gives: 
 
-![GenSamples](figures/Fig2GeneratedSamples)
+![GenSamples](figures/Fig2GeneratedSamples.png)
 
 It seems like the latent distribution has too many modes that the model is uncertain how to distribute. So I suppose there needs to be a more reliable way to generate the latent distribution? 
