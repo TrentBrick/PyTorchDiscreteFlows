@@ -5,9 +5,9 @@ Which was introduced in the paper: https://arxiv.org/abs/1905.10347
 
 The demo file, MADE, and MLP were modified and taken from: https://github.com/karpathy/pytorch-normalizing-flows
 
-To my knowledge as of January 30th 2020, this is the only working demo of discrete normalizing flows in existence. The code in edward2 (implemented in TF2 and Keras did not work for me and also lacked any tutorials). 
+To my knowledge as of March 10th 2020, this is the only working demo of discrete normalizing flows in PyTorch. The code in edward2 (implemented in TF2 and Keras lacks any tutorials. Since the release of this repo, demo code for reproducing Figure 2 using edward2 has been shared [here](https://github.com/google/edward2/blob/a0f683ffc549add74d82405bc81073b7162cd408/examples/quantized_ring_of_gaussians.py).)
 
-Clone the repo, satisfy the below package requirements, then run DiscreteFlowDemo.ipynb. After, you can run Figure2Replication.ipynb where I fail to replicate the figure. 
+To use this package, clone the repo satisfy the below package requirements, then run DiscreteFlowDemo.ipynb. If this works, you can run Figure2Replication.ipynb where I fail to replicate the Figure 2 and any other aspects of Discrete Flows. 
 
 Requirements: 
 Python 3.0+
@@ -17,6 +17,8 @@ Numpy 1.17.2+
 Implementation details: 
 NB. Going from Andre Karpathy's notation, flow.reverse() goes from the latent space to the data and flow.forward() goes from the data to the latent space. This is the inverse of some other implementations including the original Tensorflow one. 
 Implements Bipartite and Autoregressive discrete normalizing flows. Also has an implementation of MADE and a simple MLP. 
+
+Something I didn't know from reading the paper or Edward2 code is that the prior distribution itself is learnt during training. This makes the model more expressive and is acceptable because the prior is a factorized distribution that is still simple enough to sample from and work with.
 
 TODOs:
 * Ensure that the scaling functionality works (this should not matter for being able to reproduce the first few figures.)
@@ -36,5 +38,3 @@ Meanwhile, in my attempted replication (checkout Figure2Replication.ipynb) where
 And sampling from the latent space and doing a backwards pass from z->x through the trained model gives: 
 
 ![GenSamples](figures/Fig2GeneratedSamples.png)
-
-It seems like the latent distribution has too many modes that the model is uncertain how to distribute. So I suppose there needs to be a more reliable way to generate the latent distribution? 
