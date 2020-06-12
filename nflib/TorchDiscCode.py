@@ -256,7 +256,7 @@ class DiscreteBipartiteFlow(nn.Module):
     [prime fields](https://en.wikipedia.org/wiki/Finite_field)).
     """
 
-    def __init__(self, layer, parity, temperature, vocab_size, dim):
+    def __init__(self, layer, parity, temperature, vocab_size, dim, embedding=False):
         """Constructs flow.
         Args:
         layer: Two-headed masked network taking the inputs and returning a
@@ -274,6 +274,7 @@ class DiscreteBipartiteFlow(nn.Module):
         self.temperature = temperature
         self.vocab_size = vocab_size
         self.dim = dim # total dimension of the vector being dealt with. 
+        self.embedding = embedding
 
     def reverse(self, inputs, **kwargs):
         """reverse pass for bipartite data to latent."""
@@ -285,7 +286,10 @@ class DiscreteBipartiteFlow(nn.Module):
         if self.parity:
             z0, z1 = z1, z0
         x0 = z0 
-        layer_outs = self.layer(x0, **kwargs)
+        if self.embedding:
+            layer_outs = self.layer( torch.argmax(x0,dim=1).long() , **kwargs)
+        else: 
+            layer_outs = self.layer(x0, **kwargs)
         if layer_outs.shape[-1] == 2 * self.vocab_size: # have a location and scaling parameter
             loc, scale = torch.split(layer_outs, self.vocab_size, dim=-1)
             loc = disc_utils.one_hot_argmax(loc, self.temperature).type(inputs.dtype)
@@ -314,12 +318,17 @@ class DiscreteBipartiteFlow(nn.Module):
         if self.parity:
             x0, x1 = x1, x0
         z0 = x0 
-        layer_outs = self.layer(z0, **kwargs)
+        if self.embedding:
+            layer_outs = self.layer( torch.argmax(z0,dim=1).long() , **kwargs)
+        else: 
+            layer_outs = self.layer(z0, **kwargs)
+        # outputting loc and scale
         if layer_outs.shape[-1] == 2 * self.vocab_size:
             loc, scale = torch.split(layer_outs, self.vocab_size, dim=-1)
             scale = disc_utils.one_hot_argmax(scale, self.temperature).type(inputs.dtype)
             #print('the scale', scale)
             scaled_inputs = disc_utils.one_hot_multiply(x1, scale)
+        # just outputting loc
         elif layer_outs.shape[-1] == self.vocab_size:
             loc = layer_outs
             scaled_inputs = x1
