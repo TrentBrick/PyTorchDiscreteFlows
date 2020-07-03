@@ -11,6 +11,8 @@ import torch
 import torch.nn.functional as F
 from torch import nn
 
+# NOTE: this is currently incompatible with onehot inputs!
+
 class MaskedLinear(nn.Linear):
     """ same as Linear except has a configurable mask on the weights """
     
@@ -108,9 +110,11 @@ class MADE(nn.Module):
         # set the masks in all MaskedLinear layers
         layers = [l for l in self.net.modules() if isinstance(l, MaskedLinear)]
         for l,m in zip(layers, masks):
+            print('masks are:', m, m.shape)
             l.set_mask(m) # sets the mask for the different layers. 
     
     def forward(self, x):
+        print('madde shape input', x.shape)
         return self.net(x)
 
 #------------------

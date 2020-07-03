@@ -19,6 +19,7 @@ class MLP(nn.Module):
             nn.Linear(nh, nh),
             nn.LeakyReLU(0.2),
             nn.Linear(nh, nout),
+            #nn.Tanh(),
         )
     def forward(self, x):
         return self.net(x)

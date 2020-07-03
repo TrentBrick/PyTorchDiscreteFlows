@@ -9,7 +9,7 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 from torch import nn
-import disc_utils
+from . import disc_utils
 
 class DiscreteAutoFlowModel(nn.Module):
     # combines all of the discrete flow layers into a single model
@@ -282,7 +282,6 @@ class DiscreteBipartiteFlow(nn.Module):
         
         assert len(inputs.shape) ==2, 'need to flatten the inputs first!!!'
         z0, z1 = inputs[:,:self.dim//2], inputs[:,self.dim//2:]
-
         if self.parity:
             z0, z1 = z1, z0
         x0 = z0 
@@ -339,6 +338,7 @@ class DiscreteBipartiteFlow(nn.Module):
         if self.parity:
             z0, z1 = z1, z0
         z = torch.cat([z0, z1], dim=1)
+        #print('returned z', z.shape)
         return z
 
     def log_det_jacobian(self, inputs):
