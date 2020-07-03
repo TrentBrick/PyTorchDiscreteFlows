@@ -27,6 +27,7 @@ NB. Going from Andre Karpathy's notation, flow.reverse() goes from the latent sp
 Implements Bipartite and Autoregressive discrete normalizing flows. Also has an implementation of MADE and a simple MLP.
 
 ## TODOs - Pull requests very welcome!
+* Write testing script to ensure all of the models are indeed invertible. 
 * Reproduce the remanining figures/results from the original paper starting with the Potts models.
 * Implement the Sinkhorn autoregressive flow: https://github.com/google/edward2/blob/master/edward2/tensorflow/layers/discrete_flows.py#L373
 * Add non block splitting for bipartite.

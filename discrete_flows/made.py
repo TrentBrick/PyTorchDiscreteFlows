@@ -72,6 +72,11 @@ class MADE(nn.Module):
             **kwargs: Keyword arguments of parent class.
         """
         super().__init__()
+
+        # ensure always more hidden units than sequence length: 
+        for nh in hidden_dims:
+            assert nh >= input_shape[-2], "Sequence length is larger than size of hidden units. Increase nh."
+
         self.units = int(units)
         self.hidden_dims = hidden_dims
         self.input_order = input_order
@@ -108,28 +113,16 @@ class MADE(nn.Module):
             layer = MaskedLinear(channels*length,self.hidden_dims[0])
             layer.set_mask(mask)
 
-            '''tf.keras.layers.Dense(
-                    self.hidden_dims[0],
-                    kernel_initializer=make_masked_initializer(mask),
-                    kernel_constraint=make_masked_constraint(mask),
-                    activation=self.activation,
-                    use_bias=self.use_bias)'''
             self.network.append(layer)
             self.network.append(nn.ReLU())
 
         #print('made the first mask!', mask)
         # Hidden-to-hidden layers: [..., hidden_dims[l-1]] -> [..., hidden_dims[l]].
         for ind in range(1, len(self.hidden_dims)-1):
-        
+            #print('=== mask', ind, 'is:', masks[ind])
             layer = MaskedLinear(self.hidden_dims[ind],self.hidden_dims[ind+1])
             layer.set_mask(masks[ind])
 
-            '''tf.keras.layers.Dense(
-                    self.hidden_dims[0],
-                    kernel_initializer=make_masked_initializer(mask),
-                    kernel_constraint=make_masked_constraint(mask),
-                    activation=self.activation,
-                    use_bias=self.use_bias)'''
             self.network.append(layer)
             self.network.append(nn.ReLU())
 
@@ -140,9 +133,9 @@ class MADE(nn.Module):
             mask = masks[-1]
         mask = mask.unsqueeze(-1).repeat(1, 1, self.units)
         mask = mask.view(mask.shape[0], mask.shape[1] * self.units)
-        #print(self.units)
         layer = MaskedLinear(self.hidden_dims[-1],channels*length)
         layer.set_mask(mask)
+        #print('last mask', mask)
 
         self.network.append(layer)
         #self.network.append(tf.keras.layers.Reshape([length, self.units]))
