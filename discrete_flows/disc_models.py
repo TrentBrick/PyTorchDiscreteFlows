@@ -293,7 +293,7 @@ class DiscreteBipartiteFlow(nn.Module):
             loc, scale = torch.split(layer_outs, self.vocab_size, dim=-1)
             loc = disc_utils.one_hot_argmax(loc, self.temperature).type(inputs.dtype)
             scale = disc_utils.one_hot_argmax(scale, self.temperature).type(inputs.dtype)
-            print('the scale', scale.argmax(-1))
+            #print('the scale', scale.argmax(-1))
             inverse_scale = disc_utils.multiplicative_inverse(scale, self.vocab_size)
             shifted_inputs = disc_utils.one_hot_minus(z1, loc)
             x1 = disc_utils.one_hot_multiply(shifted_inputs, inverse_scale)
@@ -311,7 +311,6 @@ class DiscreteBipartiteFlow(nn.Module):
 
     def forward(self, inputs, **kwargs):
         """Reverse pass for the inverse bipartite transformation. From data to latent. """
-        #print(inputs.shape)
         assert len(inputs.shape) ==2, 'need to flatten the inputs first!'
         x0, x1 = inputs[:,:self.dim//2], inputs[:,self.dim//2:]
         if self.parity:
@@ -338,7 +337,6 @@ class DiscreteBipartiteFlow(nn.Module):
         if self.parity:
             z0, z1 = z1, z0
         z = torch.cat([z0, z1], dim=1)
-        #print('returned z', z.shape)
         return z
 
     def log_det_jacobian(self, inputs):
