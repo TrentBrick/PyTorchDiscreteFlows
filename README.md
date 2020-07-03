@@ -9,7 +9,7 @@ The demo file, MADE, and MLP were modified and taken from: https://github.com/ka
 
 ## State of Library
 
-To my knowledge as of May 28th 2020, this is the only functional demo of discrete normalizing flows in PyTorch. The code in edward2 (implemented in TF2 and Keras, lacks any tutorials. Since the release of this repo and because of correspondence with the authors of the original paper, demo code for reproducing Figure 2 using Edward2 has been shared [here](https://github.com/google/edward2/blob/a0f683ffc549add74d82405bc81073b7162cd408/examples/quantized_ring_of_gaussians.py).
+To my knowledge as of July 3rd 2020, this is the only functional demo of discrete normalizing flows in PyTorch. The code in edward2 (implemented in TF2 and Keras, lacks any tutorials. Since the release of this repo and because of correspondence with the authors of the original paper, demo code for reproducing Figure 2 using Edward2 has been shared [here](https://github.com/google/edward2/blob/a0f683ffc549add74d82405bc81073b7162cd408/examples/quantized_ring_of_gaussians.py).
 
 With collaboration from [Yashas Annadani](https://github.com/yannadani) and Jan Francu, I have been able to reproduce the paper's Figure 2 discretized mixture of Gaussians with this library.
 
@@ -27,12 +27,10 @@ NB. Going from Andre Karpathy's notation, flow.reverse() goes from the latent sp
 Implements Bipartite and Autoregressive discrete normalizing flows. Also has an implementation of MADE and a simple MLP.
 
 ## TODOs - Pull requests very welcome!
-* Add non block splitting for bipartite.
-* Implement the MADE network from Edward2 found here: https://github.com/google/edward2/blob/master/edward2/tensorflow/layers/made.py 
-    - The Karpathy MADE implementation I currently have is unable to accomodate onehot inputs and is thus broken.
-* Implement the Sinkhorn autoregressive flow: https://github.com/google/edward2/blob/master/edward2/tensorflow/layers/discrete_flows.py#L373
-* Ensure that the scaling functionality works (this should not matter for being able to reproduce the first few figures).
 * Reproduce the remanining figures/results from the original paper starting with the Potts models.
+* Implement the Sinkhorn autoregressive flow: https://github.com/google/edward2/blob/master/edward2/tensorflow/layers/discrete_flows.py#L373
+* Add non block splitting for bipartite.
+* Ensure that the scaling functionality works (this should not matter for being able to reproduce the first few figures).
 
 ## Replication of Figure 2 Mixture of Gaussians
 
