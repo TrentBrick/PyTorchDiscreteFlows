@@ -15,7 +15,7 @@ With collaboration from [Yashas Annadani](https://github.com/yannadani) and Jan 
 
 ## Use Library
 
-To use this package, clone the repo satisfy the below package requirements, then run DiscreteFlowDemo.ipynb. If this works, you can run Figure2Replication.ipynb where I fail to replicate the Figure 2 and any other aspects of Discrete Flows.
+To use this package, clone the repo satisfy the below package requirements, then run Figure2Replication.ipynb.
 
 Requirements:
 Python 3.0+
