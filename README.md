@@ -19,7 +19,7 @@ To use this package, clone the repo satisfy the below package requirements, then
 
 Requirements:
 Python 3.0+
-PyTorch 1.2.0+
+PyTorch 1.2.0+ < 1.9.0 (if you are using 1.9.0 you will have issues with the Fast Fourier Transform. See this issue and solution https://github.com/TrentBrick/PyTorchDiscreteFlows/issues/6#issuecomment-926725557)
 Numpy 1.17.2+
 
 ## Implementation details
